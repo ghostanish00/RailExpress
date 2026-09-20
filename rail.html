@@ -6274,14 +6274,14 @@ function mulberry32(seed){
 }
 
 function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
-
+const API_BASE = "https://railexpress-backend-6q97.onrender.com";
 
 const STATION_MAP = {};
 STATIONS.forEach(s=>{ STATION_MAP[s.code] = s; });
 const MAJOR_STATIONS = STATIONS.filter(s=>s.major);
 async function loadStationsFromBackend() {
   try {
-    const response = await fetch("http://localhost:5000/api/stations");
+    const response = await fetch(API_BASE + "/api/stations");
     const data = await response.json();
 
     if (data.success && Array.isArray(data.stations)) {
@@ -6318,9 +6318,9 @@ async function loadStationsFromBackend() {
 
 loadStationsFromBackend();
 async function searchFromBackend(from, to) {
-    try {
-        const response = await fetch(
-            `http://localhost:5000/api/trains/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+       try {
+       const response = await fetch(
+        `${API_BASE}/api/trains/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
         );
 
         const data = await response.json();
@@ -6614,7 +6614,7 @@ function buildGridTrains(){
 const TRAIN_GRID = TRAIN_SEED.concat(buildGridTrains());
 async function importAllTrainsToMongoDB() {
     try {
-        const response = await fetch("http://localhost:5000/api/trains/import", {
+        const response = await fetch(API_BASE + "/api/trains/import", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -6641,7 +6641,7 @@ async function importAllTrainsToMongoDB() {
 }
 async function loadTrainsFromMongoDB() {
     try {
-        const response = await fetch("http://localhost:5000/api/trains");
+        const response = await fetch(API_BASE + "/api/trains");
 
         const data = await response.json();
 
@@ -8575,7 +8575,7 @@ async function authorizePayment(){
       fare: bookingState.totalFare
     };
 
-    const response = await fetch("http://localhost:5000/api/bookings", {
+    const response = await fetch(API_BASE + "/api/bookings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -10848,7 +10848,7 @@ function lostItem(){
 // ==========================================
 async function sendBookingToBackend(details) {
     try {
-        const response = await fetch('http://localhost:5000/api/book', {
+        const response = await fetch(API_BASE + "/api/book", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(details)
@@ -11111,7 +11111,7 @@ async function sendGhostMessage() {
   addGhostMessage("Ghost soch raha hai... 👻", "bot");
 
   try {
-    const response = await fetch("http://localhost:5000/api/ghost", {
+      const response = await fetch(API_BASE + "/api/ghost", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
